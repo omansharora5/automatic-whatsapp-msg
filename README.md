@@ -61,13 +61,9 @@ Both servers listen on localhost. Internet is required for WAHA to reach WhatsAp
 
 Text, location, and video arrive as separate messages in that order. The form accepts saved MP4, MOV, WebM, MKV and AVI clips up to 60 seconds and 12 MB; it does not record or trim. FFmpeg checks duration during conversion, including when the browser cannot decode the input. Direct MP4 uploads with conversion disabled rely on the browser duration check. Location is a static latitude/longitude pin, not live tracking or address lookup.
 
-## Calling, small TTS, and speed
+## Send performance
 
-WAHA's current Calls API exposes incoming-call events and rejection, but cannot initiate a WhatsApp call or stream generated speech into one. Live call playback is **not implemented or enabled**. It requires a separate calling integration such as WhatsApp Business Calling, a provisioned business sender, and the recipient call-permission flow. A normally linked WAHA account is not that integration. See [WAHA calls](https://waha.devlike.pro/docs/how-to/calls/) and [Twilio WhatsApp Business Calling](https://www.twilio.com/docs/voice/whatsapp-business-calling).
-
-The **Short speech preview** section prepares the speech component locally using the installed Windows System.Speech voice. No AI model or cloud TTS subscription is downloaded. It accepts up to 300 characters and returns WAV audio; eight recent phrases are cached in memory. It plays only when you press Play in the browser and does not place a call or send a voice message. `POST /api/tts/preview` accepts `{ "text": "Your short sentence" }` with the same app-key authentication.
-
-Local measurements during setup: the short English sample took about 1.2 seconds to synthesize (about 133 KB WAV), and a repeat hit the cache. The generated 10-second sample video took about 3 seconds on its first preparation and under 1 ms on reuse. These are sample preparation timings, not delivery-speed guarantees.
+The generated 10-second sample video took about 3 seconds on its first preparation and under 1 ms on reuse. These are sample preparation timings, not delivery-speed guarantees.
 
 Send results now report `prepareMs`, `requestMs`, and video `cacheHit`. For an already compatible H.264/AAC MP4, uncheck **Prepare video for faster upload**, or set `video.convert: false`, to skip encoding entirely. Keep preparation enabled for other MP4 codecs; lossy preparation reduces resolution to at most 720p and can change video quality.
 

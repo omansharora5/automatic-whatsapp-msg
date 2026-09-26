@@ -2,7 +2,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createVideoPreparer } from '../video.mjs';
 import { validateBundle, sendBundle } from '../lib.mjs';
-import { previewSpeech } from '../tts.mjs';
 const data = Buffer.concat([Buffer.from([0,0,0,20]), Buffer.from('ftypisom0000')]).toString('base64');
 test('reuses conversion for identical bytes, preserves recipient/caption and disables double conversion', async () => {
   let conversions = 0;
@@ -26,8 +25,4 @@ test('video preparation failure does not block location', async () => {
   const result = await sendBundle(steps, async () => { calls++; }, async step => { if (step.type === 'video') throw new Error('Invalid video'); return { body: step.body }; });
   assert.equal(calls, 1);
   assert.deepEqual(result.results.map(r => r.status), ['accepted', 'failed-before-send']);
-});
-test('speech input stays bounded', async () => {
-  await assert.rejects(previewSpeech(''));
-  await assert.rejects(previewSpeech('x'.repeat(301)));
 });

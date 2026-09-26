@@ -3,7 +3,6 @@ import { readFile } from 'node:fs/promises';
 import { timingSafeEqual } from 'node:crypto';
 import { validateBundle, sendBundle } from './lib.mjs';
 import { createVideoPreparer } from './video.mjs';
-import { previewSpeech } from './tts.mjs';
 const prepareVideo = createVideoPreparer();
 
 const port = Number(process.env.PORT || 3210);
@@ -61,12 +60,6 @@ const server = http.createServer(async (req, res) => {
       return res.end(await readFile(new URL(`./public/${file}`, import.meta.url)));
     }
     if (!authorized(req)) return json(res, 401, { error: 'Enter APP_API_KEY from your local .env file.' });
-    if (path === '/api/tts/preview' && req.method === 'POST') {
-      let input;
-      try { input = await readJson(req); if (typeof input?.text !== 'string' || !input.text.trim() || input.text.length > 300) throw new Error('Use 1 to 300 characters.'); }
-      catch (error) { return json(res, 400, { error: error.message }); }
-      return json(res, 200, await previewSpeech(input.text));
-    }
     if (path === '/api/status' && req.method === 'GET') {
       try { return json(res, 200, await waha('/api/sessions/default')); }
       catch (error) { if (error.status === 404) return json(res, 200, { status: 'NOT_CREATED' }); throw error; }

@@ -123,19 +123,3 @@ $('send-form').addEventListener('submit', async event => {
   } catch (error) { $('result').textContent = `${error.message}\n${!submitted || error.beforeSend ? 'Nothing was sent.' : 'Check the chat before retrying to avoid duplicates.'}`; }
   finally { clearInterval(ticker); $('fields').disabled = false; }
 });
-
-let speechUrl;
-$('preview-speech').addEventListener('click', async () => {
-  $('preview-speech').disabled = true;
-  $('speech-status').textContent = 'Generating local audio…';
-  try {
-    const result = await api('/api/tts/preview', 'POST', { text: $('speech').value });
-    const bytes = Uint8Array.from(atob(result.data), c => c.charCodeAt(0));
-    if (speechUrl) URL.revokeObjectURL(speechUrl);
-    speechUrl = URL.createObjectURL(new Blob([bytes], { type: result.mimetype }));
-    $('speech-audio').src = speechUrl;
-    $('speech-audio').hidden = false;
-    $('speech-status').textContent = `${result.cacheHit ? 'Reused cached audio' : `Generated in ${result.generationMs} ms`} · ${Math.round(result.bytes / 1024)} KB. Press Play to listen. No call is placed.`;
-  } catch (error) { $('speech-status').textContent = error.message; }
-  finally { $('preview-speech').disabled = false; }
-});
