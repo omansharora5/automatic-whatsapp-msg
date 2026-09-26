@@ -1,0 +1,8 @@
+.env
+sessions/
+media/
+*.log
+.playwright-cli/
+node_modules/
+.env.*
+!.env.example

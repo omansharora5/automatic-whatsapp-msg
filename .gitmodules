@@ -1,0 +1,3 @@
+[submodule "waha"]
+	path = waha
+	url = https://github.com/devlikeapro/waha.git

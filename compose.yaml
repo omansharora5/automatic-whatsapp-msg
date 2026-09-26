@@ -1,0 +1,24 @@
+services:
+  waha:
+    image: ${WAHA_IMAGE:-devlikeapro/waha:noweb}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      WHATSAPP_DEFAULT_ENGINE: ${WHATSAPP_DEFAULT_ENGINE:-NOWEB}
+      WAHA_API_KEY: ${WAHA_API_KEY:?Run npm run setup first}
+      WAHA_DASHBOARD_USERNAME: ${WAHA_DASHBOARD_USERNAME}
+      WAHA_DASHBOARD_PASSWORD: ${WAHA_DASHBOARD_PASSWORD}
+      WHATSAPP_SWAGGER_USERNAME: ${WHATSAPP_SWAGGER_USERNAME}
+      WHATSAPP_SWAGGER_PASSWORD: ${WHATSAPP_SWAGGER_PASSWORD}
+      WAHA_DASHBOARD_ENABLED: "True"
+      WHATSAPP_SWAGGER_ENABLED: "True"
+      WAHA_PRINT_QR: "False"
+    volumes:
+      - ./sessions:/app/.sessions
+      - ./media:/app/.media
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

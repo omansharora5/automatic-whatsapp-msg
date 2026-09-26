@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>WhatsApp sender</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body><main>
+<header><span class="eyebrow">LOCAL WORKSPACE / WAHA</span><h1>A message. A moment.<br>A place.</h1><p>Send text, a short video, and a location to one WhatsApp number.</p></header>
+<section aria-labelledby="connection-heading"><h2 id="connection-heading">01 &nbsp; Connect your account</h2>
+<label for="key">App key</label><input id="key" type="password" autocomplete="off" placeholder="Paste APP_API_KEY from .env"><p class="hint">Stored only in this page’s memory. Your WAHA credentials stay on the server.</p>
+<div class="actions"><button id="connect" type="button">Connect WhatsApp</button><button id="refresh" type="button" class="secondary">Refresh status / QR</button></div>
+<p id="status" role="status">Start the native services with start.ps1, then connect.</p><img id="qr" alt="Scan this QR code in WhatsApp Linked devices" hidden width="260" height="260">
+<p class="hint">On your phone: WhatsApp → Linked devices → Link a device. Scan the QR, then refresh until WORKING.</p></section>
+<section aria-labelledby="message-heading"><h2 id="message-heading">02 &nbsp; Compose your message</h2>
+<form id="send-form"><fieldset id="fields">
+<label for="phone">Recipient number</label><input id="phone" type="tel" required placeholder="+91 98765 43210"><p class="hint">Include the country code. Nothing is sent until you click Send.</p>
+<label for="text">Text <span>optional</span></label><textarea id="text" rows="4" maxlength="10000" placeholder="Write your message…"></textarea>
+<div id="video-section" aria-labelledby="video-heading"><h3 id="video-heading">Upload a video</h3><p class="hint">Choose MP4, MOV, WebM, MKV, or AVI from File Explorer. Up to 12 MB and 60 seconds.</p>
+<div id="video-drop"><label for="video">Choose video file</label><input id="video" type="file" accept="video/*,.mp4,.mov,.webm,.mkv,.avi"><p class="hint">Or drop your saved video here</p></div>
+<p id="video-status" role="status">No video selected.</p><video id="video-preview" controls preload="metadata" hidden></video><button id="remove-video" type="button" class="secondary" hidden>Remove video</button></div>
+<label for="caption">Video caption <span>optional</span></label><input id="caption" maxlength="2000">
+<label class="checkbox"><input id="prepare-video" type="checkbox" checked> Prepare video for faster upload</label><p class="hint">Compresses to at most 720p and reuses prepared clips. Uncheck only for an already compatible H.264/AAC MP4 to skip encoding.</p>
+<label class="checkbox"><input id="include-location" type="checkbox"> Include a location pin</label>
+<div id="location-fields" hidden><div class="columns"><div><label for="latitude">Latitude</label><input id="latitude" type="number" min="-90" max="90" step="any" placeholder="28.6139"></div><div><label for="longitude">Longitude</label><input id="longitude" type="number" min="-180" max="180" step="any" placeholder="77.2090"></div></div><label for="title">Place name</label><input id="title" maxlength="200" placeholder="Meeting point"><p class="hint">Use coordinates from your map. This sends a fixed pin, not live tracking.</p></div>
+<button id="send" type="submit">Send to this number</button></fieldset></form>
+<pre id="result" role="status" aria-live="polite">Your send results will appear here.</pre></section>
+<section aria-labelledby="speech-heading"><h2 id="speech-heading">03 &nbsp; Short speech preview</h2><p class="hint">Local audio only. WAHA cannot place a WhatsApp call or play audio into one. Live calling needs a separate WhatsApp Business Calling integration.</p><label for="speech">Words to speak <span>up to 300 characters</span></label><textarea id="speech" maxlength="300" rows="2" placeholder="Hello, your booking is confirmed."></textarea><button id="preview-speech" type="button">Generate audio preview</button><p id="speech-status" role="status"></p><audio id="speech-audio" controls hidden></audio></section>
+<footer>Text → location → video. Video prepares in parallel and sends last. Each selected item becomes a separate WhatsApp message.</footer>
+</main></body></html>

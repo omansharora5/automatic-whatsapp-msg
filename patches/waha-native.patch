@@ -1,0 +1,55 @@
+diff --git a/package.json b/package.json
+index e884a40..30ceee7 100644
+--- a/package.json
++++ b/package.json
+@@ -67,7 +67,7 @@
+     "@types/sqlite3": "^5.1.0",
+     "@types/ws": "^8.5.4",
+     "@wppconnect-team/wppconnect": "github:wppconnect-team/wppconnect#master",
+-    "@wppconnect/wa-js": "github:wppconnect-team/wa-js#main",
++    "@wppconnect/wa-js": "4.6.0",
+     "adm-zip": "0.5.10",
+     "agentkeepalive": "^4.5.0",
+     "async-lock": "^1.4.1",
+diff --git a/src/main.ts b/src/main.ts
+index 45f2230..ea8af8e 100644
+--- a/src/main.ts
++++ b/src/main.ts
+@@ -103,7 +103,7 @@ async function bootstrap() {
+   AppModule.appReady(app, logger);
+   app.enableShutdownHooks();
+   const config = app.get(WhatsappConfigService);
+-  await app.listen(config.port);
++  await app.listen(config.port, process.env.WAHA_LISTEN_HOST || '127.0.0.1');
+   logger.info(`WhatsApp HTTP API is running on: ${await app.getUrl()}`);
+   logger.info(VERSION, 'Environment');
+ }
+diff --git a/yarn.lock b/yarn.lock
+index 9dbdb7a..e6b2861 100644
+--- a/yarn.lock
++++ b/yarn.lock
+@@ -5099,14 +5099,7 @@ __metadata:
+   languageName: node
+   linkType: hard
+ 
+-"@wppconnect/wa-js@github:wppconnect-team/wa-js#main":
+-  version: 4.6.0
+-  resolution: "@wppconnect/wa-js@https://github.com/wppconnect-team/wa-js.git#commit=be5a182c3ad7ad152674c0a087088b32b8a289da"
+-  checksum: 10/3d6f887c7ed903a44f7bd17e8adc70f460e8b470e741393795fe4d4c8eb2c2a5ca59eac2623fdcb679149ea27bca1aee976484f2348d5d6852463647be2f5841
+-  languageName: node
+-  linkType: hard
+-
+-"@wppconnect/wa-js@npm:^4.6.0":
++"@wppconnect/wa-js@npm:4.6.0, @wppconnect/wa-js@npm:^4.6.0":
+   version: 4.6.0
+   resolution: "@wppconnect/wa-js@npm:4.6.0"
+   checksum: 10/2f3ef8bfadb8af39239a38d2a42a0c13d4a0caf69c3115e8c431613a76b01791df2b9798f00c142f2d56d52daaf733171f9f7f3ef05404bd6a63c84fdde95dce
+@@ -14198,7 +14191,7 @@ __metadata:
+     "@types/user-agents": "npm:^1"
+     "@types/ws": "npm:^8.5.4"
+     "@wppconnect-team/wppconnect": "github:wppconnect-team/wppconnect#master"
+-    "@wppconnect/wa-js": "github:wppconnect-team/wa-js#main"
++    "@wppconnect/wa-js": "npm:4.6.0"
+     adm-zip: "npm:0.5.10"
+     agentkeepalive: "npm:^4.5.0"
+     async-lock: "npm:^1.4.1"
